@@ -17,13 +17,18 @@ const forecast = (lon, lat, callback) => {
             callback(body.error.info, undefined)
             return
         }
-        const {current: {temperature, feelslike, humidity, weather_descriptions: [description, ...rest]}, location: {name:locationName, region, country}} = body
+        const {current: {temperature, feelslike, humidity, 
+            wind_speed, wind_degree, wind_dir,
+            weather_descriptions: [description, ...rest]}, 
+            location: {name:locationName, region, country}} = body
         /*
         current = response.body.current
         location = response.body.location
         */
         callback(undefined, 
-            vsprintf('%s, %s, %s is currently %s. It is currently %d degrees out, It feels like %d degrees out. Humidity is %d%%.', 
+            vsprintf('%s, %s, %s is currently %s. It is currently %d degrees out, It feels like %d degrees out. ' + 
+            'Humidity is %d%%. ' + 
+            'Wind speed is %d mph in direction %d degrees %s', 
                     [
                         locationName,
                         region,
@@ -31,7 +36,10 @@ const forecast = (lon, lat, callback) => {
                         description,
                         temperature,
                         feelslike,
-                        humidity
+                        humidity,
+                        wind_speed,
+                        wind_degree,
+                        wind_dir
                     ])
                 )
     })
